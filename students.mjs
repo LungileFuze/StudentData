@@ -1,11 +1,11 @@
-const fs = require('fs')
-// const chalk = require('chalk')
+import fs from 'fs'
+import chalk from 'chalk'
 
 const getStudents = () => {
     console.log("Getting students")
 }
 
-//Pushing a student to a array
+//Pushing a student into a array
 const addStudents = (name, age, Class) => {
     
     const students = loadStudents()
@@ -19,9 +19,9 @@ const addStudents = (name, age, Class) => {
             class: Class
         })
         saveStudents(students)
-        console.log(`${name} was added succefully!!`)
+        console.log(chalk.green(`${name} was added succefully!!`))
     } else {
-        console.log("Record aleady exist")
+        console.log(chalk.red("Record aleady exist"))
     }
 }
 
@@ -33,24 +33,11 @@ const removeStudent = (name) => {
 
     if (filteredStudents.length < students.length) {
         saveStudents(filteredStudents);
-        console.log(`Student ${name} removed successfully!`)
+        console.log(chalk.green(`Student ${name} removed successfully!`))
     } else {
-        console.log(`Student ${name} not found.`)
+        console.log(chalk.red(`Student ${name} not found.`))
     }
 }
-
-// const listAllStudents = () => {
-    
-//     const students = loadStudents();
-
-//     students.forEach( student => {
-//         console.log("Name: " + student.name + ", Age: " + student.age + ", Class: " + student.class);
-//         console.log("-----------------------------------------------");
-//     });
-// }
-
-// console.log(listAllStudents())
-
 
 //load students
 const loadStudents = () => {
@@ -64,20 +51,13 @@ const loadStudents = () => {
     } 
 }
 
+//Save student
 const saveStudents = (students) => {
     const stringData = JSON.stringify(students)
     fs.writeFileSync('student.json', stringData)
 }
 
-const listStudents = () => {
-    
-    const students = loadStudents()
-
-    students.forEach(student => {
-        console.log("Name: " + student.name + ", Age: " + student.age + ", Class: " + student.class)
-    });
-}
-console.log(listStudents())
+//Read student
 
 const readStudent = (name) => {
 
@@ -87,17 +67,22 @@ const readStudent = (name) => {
 
     if(foundStudent) {
         console.log("Student found")
-        console.log("Name: " + foundStudent.name + ", Age: " + foundStudent.age + ", Class: " + foundStudent.class)
+        console.log(chalk.yellow("Name: " + foundStudent.name + ", Age: " + foundStudent.age + ", Class: " + foundStudent.class))
     }
 }
 
+//List all students
 
+const listStudents = () => {
+    
+    const students = loadStudents()
 
-module.exports = {
-    getStudents:getStudents,
-    addStudents:addStudents,
-    removeStudent:removeStudent,
-    listStudents:listStudents,
-    readStudent:readStudent
-
+    students.forEach(student => {
+        console.log(chalk.cyan("Name: " + student.name + ", Age: " + student.age + ", Class: " + student.class))
+    });
 }
+console.log(listStudents())
+
+
+
+export { getStudents, addStudents, removeStudent, listStudents, readStudent };
